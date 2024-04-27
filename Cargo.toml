@@ -1,0 +1,16 @@
+[package]
+name = "raad"
+version = "0.1.0"
+authors = ["bend-n <bend.n@outlook.com>"]
+license = "MIT"
+edition = "2021"
+description = "raad library for reading and writing bytes"
+repository = "https://github.com/bend-n/raad"
+exclude = ["tdata", "benches/", ".gitignore"]
+categories = ["encoding", "parsing"]
+rust-version = "1.79"
+keywords = ["data", "read", "write", "io"]
+
+[package.metadata.docs.rs]
+all-features = true
+rustdoc-args = ["--cfg", "docsrs"]
