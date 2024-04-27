@@ -2,7 +2,7 @@
 
 This crate provides neat ways to eat bytes out of your favorite [readers](https://doc.rust-lang.org/std/io/trait.Read.html) and push bytes into cute [writers](https://doc.rust-lang.org/std/io/trait.Write.html).
 
-This crate has three modules, one for each kind of [endianness](https://en.wikipedia.org/wiki/Endianness): [`be`](https://docs.rs/raad/latest/raad/be/index.html) (big endian), [`le`](https://docs.rs/raad/latest/raad/le/index.html) (little endian), and [`ne`](https://docs.rs/raad/latest/raad/ne/index.html) (native endian-- whatever your system is on)
+This crate has three modules, one for each kind of [endianness](https://en.wikipedia.org/wiki/Endianness): [`be`](https://docs.rs/raad/latest/raad/be/index.html) (big endian), [`le`](https://docs.rs/raad/latest/raad/le/index.html) (little endian), and [`ne`](https://docs.rs/raad/latest/raad/ne/index.html) (native endian— whatever your system is on)
 
 # Examples
 
