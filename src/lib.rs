@@ -61,6 +61,11 @@ macro_rules! trt {
                 T::r(self)
             }
         }
+        #[diagnostic::on_unimplemented(
+            message = "this type is not suitable for reading into",
+            note = "read to [u8; N] first and then parse it",
+            label = "unreadable type"
+        )]
         trait Readable
         where
             Self: Sized,
@@ -72,6 +77,12 @@ macro_rules! trt {
             fn r(from: &mut impl Read) -> Result<[u8; N]> {
                 let mut buf = [0; N];
                 from.read_exact(&mut buf).map(|()| buf)
+            }
+        }
+
+        impl<const N: usize> Writable for &[u8; N] {
+            fn _w(self, to: &mut impl Write) -> Result<()> {
+                to.w(&self[..])
             }
         }
 
@@ -87,6 +98,11 @@ macro_rules! trt {
                 data._w(self)
             }
         }
+        #[diagnostic::on_unimplemented(
+            message = "this type is not suitable for writing",
+            note = "turn it into a &[u8] first and then write that",
+            label = "unwritable type",
+        )]
         trait Writable {
             fn _w(self, to: &mut impl Write) -> Result<()>;
         }
@@ -102,6 +118,12 @@ macro_rules! trt {
 macro_rules! n {
     (writes $bytes:ident $($n:ident)+) => {
         $(
+            impl<const N: usize> Writable for &[$n; N] {
+                fn _w(self, to: &mut impl Write) -> Result<()> {
+                    to.w(&self[..])
+                }
+            }
+
             impl Writable for &[$n] {
                 fn _w(self, to: &mut impl Write) -> Result<()> {
                     if (cfg!(target_endian = "little") && stringify!($bytes) == "le") || (cfg!(target_endian = "big") && stringify!($bytes) == "be") {
@@ -163,6 +185,12 @@ macro_rules! n {
         bytes![Vec<$n>];
         bytes![Box<[$n]>];
         impl<const N: usize> Writable for [$n; N] {
+            fn _w(self, to: &mut impl Write) -> Result<()> {
+                to.w(&self[..])
+            }
+        }
+
+        impl<const N: usize> Writable for &[$n; N] {
             fn _w(self, to: &mut impl Write) -> Result<()> {
                 to.w(&self[..])
             }
